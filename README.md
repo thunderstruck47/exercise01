@@ -23,5 +23,6 @@ mysql -u [USER] -p < create_table.sql
 Navigate back and start the server
 
 ````
+cd ../
 python server.py
 ````
