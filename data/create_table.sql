@@ -1,5 +1,5 @@
 #CREATING DATABASE
-DROP DATABASE `ekatte`;
+DROP DATABASE IF EXISTS `ekatte`;
 CREATE DATABASE `ekatte`;
 USE `ekatte`;
 
@@ -51,6 +51,7 @@ IGNORE 1 LINES
 #CREATING SELISHTE TABLE
 CREATE TABLE `selishte`(
 	`ekatte` int(11) NOT NULL,
+	`prefix` varchar(4) NOT NULL,
 	`name` varchar(45) NOT NULL,
 	`oblast_id` varchar(4) NOT NULL,
 	`obshtina_id` varchar(5) NOT NULL,
@@ -64,7 +65,7 @@ LOAD DATA LOCAL INFILE 'Ek_atte.csv'
 INTO TABLE `selishte`
 FIELDS TERMINATED BY ','
 IGNORE 2 LINES
-(`ekatte`,@dummy,`name`,`oblast_id`,`obshtina_id`,`kmetstvo_id`,`kind`,@dummy,@dummy,@dummy,@dummy,@dummy);
+(`ekatte`,`prefix`,`name`,`oblast_id`,`obshtina_id`,`kmetstvo_id`,`kind`,@dummy,@dummy,@dummy,@dummy,@dummy);
 
 #CREATING REFERENES
 ALTER TABLE `selishte`
