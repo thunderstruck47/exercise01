@@ -1,15 +1,15 @@
-#Ekatte Data
+## Ekatte Data
 
 exercise01
 
-## Prerequisites
+### Prerequisites
 
 * [Python](https://www.python.org/downloads/) Runtime for the Python programming language
+* [MySQL Sever](https://dev.mysql.com/downloads/mysql/) MySQL Community Server
 * [Flask](http://flask.pocoo.org/) A microframework for Python
 * [MySQLdb](http://mysql-python.sourceforge.net/MySQLdb.html) An interface to MySQL database server for Python
-* [MySQL Sever](https://dev.mysql.com/downloads/mysql/) MySQL Community Server
 
-## Installation
+### Installation
 
 Navigate to the "data" folder and run the SQL script.
 ````
@@ -18,7 +18,7 @@ cd exercise01/data/
 mysql -u [USER] -p < create_table.sql
 ````
 
-## Getting Started
+### Getting Started
 
 Navigate back and start the server
 
