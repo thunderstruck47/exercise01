@@ -26,3 +26,10 @@ Navigate back and start the server
 cd ../
 python server.py
 ````
+
+###To do:
+
+* Migrate to PostgreSQL and deploy to heroku
+* Add interactive map
+* Advance searching capability
+* Integrate some NSI data
