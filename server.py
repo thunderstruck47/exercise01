@@ -1,5 +1,7 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
+import os
 import MySQLdb
+import json
 
 app = Flask(__name__)
 
@@ -13,6 +15,15 @@ def main():
         c.execute('''SELECT selishte.prefix, selishte.name, oblast.name, obshtina.name FROM oblast INNER JOIN selishte ON selishte.oblast_id = oblast.oblast_id INNER JOIN obshtina ON obshtina.obshtina_id = selishte.obshtina_id WHERE selishte.name LIKE %s''', ("%" + _param + "%",))
         results = c.fetchall()
     return render_template('main.html', res = results)
+
+@app.route('/data/<filename>', methods=['GET'])
+def get_geojson(filename=None):
+    print filename
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT,"data",filename)
+    data = json.load(open(json_url))
+    return jsonify(data)
+
 
 if __name__ == "__main__":
     app.run()
