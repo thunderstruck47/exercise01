@@ -1,8 +1,6 @@
 #!/bin/python2
 from flask import Flask, request, render_template, redirect, url_for, jsonify
-import os
-import MySQLdb
-import json
+import os, json, MySQLdb
 
 app = Flask(__name__)
 
@@ -18,7 +16,7 @@ def main():
 
 @app.route('/data/<filename>', methods=['GET'])
 def get_geojson(filename=None):
-    print filename
+    #check if filename is valid
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT,"data",filename)
     data = json.load(open(json_url))
