@@ -27,7 +27,7 @@ cd ../
 python server.py
 ````
 
-###To do:
+### To do
 
 * Migrate to PostgreSQL and deploy to heroku
 * Add interactive map
