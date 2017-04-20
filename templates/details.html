@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ekatte</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.js" rossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!-- Input Section -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <form action="/" class="input-group"  method="POST">
+            <input type="text" class="form-control" name="search" placeholder="Въведете селище.." value="{{request.form.search}}">
+            <span class="input-group-btn">
+              <input type="submit" class="btn btn-secondary" value="Покажи">
+            </span>
+          </form>
+        </div>
+      </div>
+    <!-- Map Section -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="map" style="height: 600px"></div>
+      </div>
+    </div>
+    <!-- Details  Section -->
+    {% if result %}
+    <div class="card">
+    <div class="card-block">
+     <h4 class="card-title">
+      {% if result[7] == "1" %} град
+      {% elif result[7] == "3" %} село
+      {% elif result[7] == "7" %} манастир
+      {% endif %}
+      {{ result[5] }}
+      </h4>
+    <hr style="width: 100%" />
+    <dl class="row">
+      <dt class="col-sm-3">Област</dt>
+      <dd class="col-sm-3">{{ result[0] }}</dd>
+      <dt class="col-sm-3">EKATTE</dt>
+      <dd class="col-sm-3">{{result[6] }}</dd>
+      <dt class="col-sm-3">Община</dt>
+      <dd class="col-sm-9">{{ result[2] }}</dd>
+      <dt class="col-sm-3">Кметство</dt>
+      <dd class="col-sm-9">{{ result[4] }}</dd>
+      <dt class="col-sm-3">Надморска височина</dt>
+      <dd class="col-sm-3">
+      {% if result[8] == "1" %} до 49 метра вкл.
+      {% elif result[8] == "2" %} 50 - 99 метра вкл.
+      {% elif result[8] == "3" %} 100 - 199 метра вкл.
+      {% elif result[8] == "4" %} 200 - 299 метра вкл.
+      {% elif result[8] == "5" %} 300 - 499 метра вкл.
+      {% elif result[8] == "6" %} 500 - 699 метра вкл.
+      {% elif result[8] == "7" %} 700 - 999 метра вкл.
+      {% elif result[8] == "8" %} 1000 метра и повече
+      {% endif %}
+      </dd>
+
+      <script>var ek = {{ result[6] }}</script>
+      {% endif %}
+    </dl>
+    </div>
+    </div>
+
+    <!-- Script Section -->
+    <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 42.733883, lng: 25.48583},
+            zoom: 7
+             });
+            google.maps.Polygon.prototype.getBounds = function() {
+                var bounds = new google.maps.LatLngBounds();
+                var paths = this.getPaths();
+                var path;
+                for (var i = 0; i < paths.getLength(); i++) {
+                    path = paths.getAt(i);
+                    for (var ii = 0; ii < path.getLength(); ii++) {
+                        bounds.extend(path.getAt(ii));
+                    }
+                }
+                return bounds;
+            }
+            var styledMapType = new google.maps.StyledMapType(
+            [
+  {
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#f5f5f5"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#616161"
+      }
+    ]
+  },
+  {
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "color": "#f5f5f5"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.country",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#000000"
+      },
+      {
+        "visibility": "on"
+      },
+      {
+        "weight": 0.5
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.land_parcel",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#bdbdbd"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.man_made",
+    "stylers": [
+      {
+        "weight": 4
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#eeeeee"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#757575"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#e5e5e5"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#ffffff"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#757575"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#dadada"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#616161"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.line",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#e5e5e5"
+      }
+    ]
+  },
+  {
+    "featureType": "transit.station",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#eeeeee"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#c9c9c9"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#9e9e9e"
+      }
+    ]
+  }
+] 
+            );
+
+            map.mapTypes.set('styled_map', styledMapType);
+            map.setMapTypeId('styled_map');
+            map.data.setStyle({
+                fillColor: 'green',
+                strokeWeight: 0.3
+            });
+           $.getJSON('/data/settlements.geojson', function(data) {
+            console.log(data)
+            for (var i = 0; i<data.features.length; i++) {
+                if (data.features[i].properties.ekatte == ek) {
+                    map.data.addGeoJson(data.features[i]);
+                    map.data.forEach(function(item) {
+                       console.log(data.features[i].geometry.getBounds());
+                    });
+                    break;
+                }
+            }
+            })
+        }
+    </script>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4hNuWo7EYXepV5bXicvleKxwXQIVk0Co&callback=initMap" async defer></script> 
+  </body>
+
+</html>

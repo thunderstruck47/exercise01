@@ -57,6 +57,7 @@ CREATE TABLE `selishte`(
 	`obshtina_id` varchar(5) NOT NULL,
 	`kmetstvo_id` varchar(8) NOT NULL,
 	`kind` enum('1','3','7'),
+    `altitude` enum('1','2','3','4','5','6','7','8'),
 	PRIMARY KEY (`ekatte`)
 );
 
@@ -65,7 +66,7 @@ LOAD DATA LOCAL INFILE 'Ek_atte.csv'
 INTO TABLE `selishte`
 FIELDS TERMINATED BY ','
 IGNORE 2 LINES
-(`ekatte`,`prefix`,`name`,`oblast_id`,`obshtina_id`,`kmetstvo_id`,`kind`,@dummy,@dummy,@dummy,@dummy,@dummy);
+(`ekatte`,`prefix`,`name`,`oblast_id`,`obshtina_id`,`kmetstvo_id`,`kind`,@dummy,`altitude`,@dummy,@dummy,@dummy);
 
 #CREATING REFERENES
 ALTER TABLE `selishte`
