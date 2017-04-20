@@ -23,12 +23,19 @@ def get_geojson(filename=None):
 
 @app.route('/<oblast>', methods=['GET'])
 def get_oblast(oblast=None):
-    print oblast
-    pass
+    db, c = connect_to_db()
+    c.execute('''SELECT selishte.prefix, selishte.name, oblast.name, obshtina.name  FROM selishte INNER JOIN obshtina ON selishte.obshtina_id = obshtina.obshtina_id INNER JOIN oblast ON oblast.oblast_id = selishte.oblast_id WHERE oblast.name=%s;''',(oblast,))
+    result = c.fetchall()
+    return render_template('main.html', res = result)
+
 
 @app.route('/<oblast>/<obshtina>', methods=['GET'])
 def get_obshtina(oblast=None,obshtina=None):
-    pass
+    db, c = connect_to_db()
+    c.execute('''SELECT selishte.prefix, selishte.name, oblast.name, obshtina.name  FROM selishte INNER JOIN obshtina ON selishte.obshtina_id = obshtina.obshtina_id INNER JOIN oblast ON oblast.oblast_id = selishte.oblast_id WHERE oblast.name=%s AND obshtina.name=%s;''',(oblast,obshtina))
+    result = c.fetchall()
+    return render_template('main.html', res = result)
+
 
 @app.route('/<oblast>/<obshtina>/<selishte>', methods=['GET'])
 def get_selishte(oblast=None,obshtina=None,selishte=None):
